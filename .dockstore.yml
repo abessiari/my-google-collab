@@ -1,4 +1,9 @@
 version: 1.2
-notebooks:
-  - path: /mynotebook.ipynb
-    publish: true
+    workflows:
+        - subclass: CWL
+          primaryDescriptorPath: <String>  # absolute path
+          testParameterFiles: <String Array>  # absolute path
+          readMePath: /mynotebook.ipynb
+          authors:
+              - name: Abdelilah Essiari
+                email: aessiari@lbl.gov
