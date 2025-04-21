@@ -6,8 +6,7 @@
    - [Edit Template](#edit_template)
    - [Manifest](#manifest_template)
  - [Resources](#resources)
-   - [Nodes](#nodes)
-   - [Services](#pools)
+   - [Address Pools](#pools)
    - [Services](#services)
  - [Dependencies](#dependencies)
 
@@ -27,7 +26,7 @@ The `config` class support two types:
 # <a name="variables"></a>Variables
 Variables have their own class named <i>variable</i>. A variable consists of a name and a value. Its declaration 
 uses the <i>default</i> attribute signifying that it can be overriden at runtime using an external var-file. 
-The variable <i>bandwidth<i> declared below can be referred to by the expression ```'{{ var.bandwidth }}'```.
+The variable <i>bandwidth<i> declared below can be referred using the expression ```'{{ var.bandwidth }}'```.
  
 
 ```
@@ -99,7 +98,7 @@ A resource consists of a <i>type</i>, a <i>label</i> and a dictionary. The parsi
 
 As of now, we support the following type: <i>service</i>. The <i>label</i> can be any python variable string and is used to name of the resource. Resources are declared under their own class named <i>resource<i>. 
  
-### <a name="pools"></a>Pools
+### <a name="pools"></a>Address Pools
 
 Note the required <i>pool</i> attribute. 
  
