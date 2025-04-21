@@ -7,7 +7,7 @@
    - [Manifest](#manifest_template)
  - [Resources](#resources)
    - [Nodes](#nodes)
-   - [Networks](#networks)
+   - [Services](#pools)
    - [Services](#services)
  - [Dependencies](#dependencies)
 
@@ -17,8 +17,7 @@ This readme file describes the sense workflow model. The model consist of the fo
 - [ ] config
 - [ ] resource
 
-The `resource` class support two types:
-- [ ] pool
+The `resource` class support a single type:
 - [ ] service
 
 The `config` class support two types:
@@ -98,52 +97,35 @@ resource:
 # <a name="resources"></a>Resources
 A resource consists of a <i>type</i>, a <i>label</i> and a dictionary. The parsing process guarantees that the combination of the type and the label is unique. Resources can refer to each other using the expression ```'{{ type.label }}'```. They can also refer to a resource's attribute using ```'{{ type.label.attribute_name }}'```. 
 
-As of now we support the following types: <i>pool</i> and <i>service</i>. The <i>label</i> can be any string and is used to name of the resource. Resources are declared under their own class named <i>resource<i>. 
+As of now, we support the following type: <i>service</i>. The <i>label</i> can be any python variable string and is used to name of the resource. Resources are declared under their own class named <i>resource<i>. 
  
-### <a name="nodes"></a>Nodes
-A <i>node</i> <b>must</b> refer to a provider. Here it refers to the provider declared above. 
- 
-A <i>service</i> or a <i>network</i> would refer to this node using its type and label like so: ```'{{ node.fabric_node }}'```
- 
-```
-resource:                                               # Class
-  - node:                                               # Type must be one of node, network, or service
-      - fabric_node:                                    # Label can be any string
-            provider: '{{ fabric.fabric_provider }}'
-            site: '{{ var.fabric_site }}'
-            image: default_rocky_8   
-            count: 1                               
-```
-### <a name="networks"></a>Networks
-A <i>network</i> <b>must</b> refer to a provider. Here it refers to the provider declared above. 
- 
-A <i>node</i> or a <i>network</i> would refer to this network using its type and label like so: ```'{{ network.fabric_network }}'```
+### <a name="pools"></a>Pools
+
+Note the required <i>pool</i> attribute. 
  
 ```
 resource:                                               # Class
-   - network:                                           # Type can be node or network
-      - fabric_network:                                 # Label can be any string
-            provider: '{{ fabric.fabric_provider }}'
-            site: '{{ var.fabric_site }}'
-            name: my_network
+  - service:                                            # Type must be one of [service]
+      - pool1:                                          # Label can be any python string
+            pool: AutoGOLE-IPv4-Test-Pool
+            addr_type: IPv4
+            batch: subnet
+            netmask: '/30'                          
 ```
+
 ### <a name="services"></a>Services
-A <i>service</i> <b>must</b> refer to a provider. Here it refers to a Janus provider for container management.
+
+Note the required <i>profile</i> attribute.
  
- 
+
 ```
-provider:
-  - janus:
-      - janus_provider:
-          credential_file: ~/.fabfed/fabfed_credentials.yml
-          profile: janus
-
-
-resource:                                                          # Class
-   - service:                                                      # Must be one of node, network, or service
-      - dtn_service:                                               # Label can be any string
-          - provider: '{{ janus.janus_provider }}'
-            node: [ '{{ node.my_node0 }}', '{{ node.my_node1 }}' ] # List of nodes to apply the service to
+resource:                                               # Class
+  - service:                                            # Type must be one of [service]
+      - fabric_l2vpn:                                   # Label can be any python string
+          profile: FABRIC-L2-Net
+          edit_template: '{{ edit_template.fabric_l2vpn_edit_template }}'
+          manifest_template: '{{ manifest_template.fabric_l2vpn_manifest_template }}'
+          count: '{{ var.count }}'
 ```
  
 # <a name="dependencies"></a>Dependencies
