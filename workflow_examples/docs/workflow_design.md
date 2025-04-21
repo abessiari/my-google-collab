@@ -50,7 +50,7 @@ We have two types `edit_template` and `manifest_template` referred to by <i>serv
 
 ### <a name="edit_template"></a>Edit Template
 
-In the example below, the sense service <i>fabric_l2vpn</i> refers to the <i>edit_template</i> fabric_l2vpn_edit_template.
+In the example below, the sense service `fabric_l2vpn` refers to the `edit_template` fabric_l2vpn_edit_template.
 
 ```
 config:
@@ -68,7 +68,7 @@ resource:
 
 ### <a name="manifest_template"></a>Manifest
 
-In the example below, the sense service <i>fabric_l2vpn</i> refers to the <i>manifest_template</i> fabric_l2vpn_manifest_template.
+In the example below, the sense service `fabric_l2vpn` refers to the `manifest_template` fabric_l2vpn_manifest_template.
 
 ```
 config:
@@ -96,7 +96,7 @@ resource:
 # <a name="resources"></a>Resources
 A resource consists of a <i>type</i>, a <i>label</i> and a dictionary. The parsing process guarantees that the combination of the type and the label is unique. Resources can refer to each other using the expression ```'{{ type.label }}'```. They can also refer to a resource's attribute using ```'{{ type.label.attribute_name }}'```. 
 
-As of now, we support the following type: <i>service</i>. The <i>label</i> can be any python variable string and is used to name of the resource. Resources are declared under their own class named <i>resource<i>. 
+As of now, we support the following type: `service`. The <i>label</i> can be any python variable string and is used to name of the resource. Resources are declared under their own class named <i>resource<i>. 
  
 ### <a name="pools"></a>Address Pools
 
@@ -128,23 +128,38 @@ resource:                                               # Class
 ```
  
 # <a name="dependencies"></a>Dependencies
-A resource can refer to other resources that it depends on. Line 14 in the example below, states that the <i>fabric_node</i> depends 
-on the <i>fabric_network</i>. This is an `internal dependency` as both resources are handled by the same provider. The fabfed 
-controller detects internal and external dependencies processes the resources in the correct during the apply phase and the destroy phase
+A resource can refer to other resources that it depends on. In the example below, we have two dependencies: 
+- The sense services `serv1` and `serv2` deponds on `pool1`. 
+- The sense services `serv2` deponds on `serv1`
 
-Internally the controller handles external and internal dependencies differently. In the example below the controller would `add` the fabric node after `adding` the fabric network. And would `add` the fabric node after `creating` the chameleon network. 
+And so during the `-apply` phase, the resources would get created in this order [pool1, serv1, serv2]
+During the `destroy`, the order would be reversed. 
+
 ```
 resource:
-  - network:
-      - chi_network:
-          provider: '{{ chi.chi_provider }}'
-          layer3: "{{ layer3.my_layer }}"
-      - fabric_network:
-          provider: '{{ fabric.fabric_provider }}'
-          layer3: "{{ layer3.my_layer }}"
-          stitch_with:
-            - network: '{{ network.chi_network }}' # External dependency 
-      - fabric_node:
-          provider: '{{ fabric.fabric_provider }}'
-          network: '{{ network.fabric_network }}'  # Internal dependency
+  - service:
+      - pool1:
+          pool: AutoGOLE-IPv4-Test-Pool
+          addr_type: IPv4
+          batch: subnet
+          netmask: '/30'
+      - serv1:
+          profile: Any-to-Any-L2VPN-IPv4
+          edit_template:
+              data.connections[0].terminals[0].uri: urn:ogf:network:maxgigapop.net:2013:ptxn-sense-v1.maxgigapop.net
+              data.connections[0].terminals[1].uri: urn:ogf:network:es.net:2013::star-cr6:2_1_c5_1:+
+              data.connections[0].suggest_ip_range[0].start: '{{ service.pool1.hosts[0] }}'
+              data.connections[0].suggest_ip_range[0].end: '{{ service.pool1.hosts[0] }}'
+              data.connections[0].bandwidth.capacity: 1000
+      - serv2:
+          profile: Any-to-Any-L2VPN-IPv4
+          manifest_template: '{{ manifest_template.nrp_manifest_template }}'
+          edit_template:
+              data.connections[0].terminals[0].uri: urn:ogf:network:icair.org:2013:mren8700:esnet
+              data.connections[0].terminals[1].uri: urn:ogf:network:starlight.org:2022:r740xd4.it.northwestern.edu
+              data.connections[0].suggest_ip_range[0].start: '{{ service.pool1.hosts[1] }}'
+              data.connections[0].suggest_ip_range[0].end: '{{ service.pool1.hosts[1] }}'
+              data.connections[0].terminals[0].vlan_tag: '{{ service.serv1.manifest.terminals[1].tag }}'
+              data.connections[0].bandwidth.capacity: 1000
+
 ```
