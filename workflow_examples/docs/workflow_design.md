@@ -16,10 +16,10 @@ This readme file describes the sense workflow model. The model consist of the fo
 - [ ] config
 - [ ] resource
 
-The `resource` class support a single type:
+The `resource` class supports a single type:
 - [ ] service
 
-The `config` class support two types:
+The `config` class supports two types:
 - [ ] edit_template
 - [ ] manifest_template
 
@@ -70,6 +70,9 @@ resource:
 
 In the example below, the sense service `fabric_l2vpn` refers to the `manifest_template` fabric_l2vpn_manifest_template.
 
+- Note: The manifest_template can be a string pointing to a json file. 
+- Note: The manifest_template file should use python variable strings so that other resources can refer to them. 
+
 ```
 config:
   - manifest_template:
@@ -93,6 +96,8 @@ resource:
           profile: FABRIC-L2-Net
           manifest_template: '{{ manifest_template.fabric_l2vpn_manifest_template }}'
 ```
+
+
 # <a name="resources"></a>Resources
 A resource consists of a <i>type</i>, a <i>label</i> and a dictionary. The parsing process guarantees that the combination of the type and the label is unique. Resources can refer to each other using the expression ```'{{ type.label }}'```. They can also refer to a resource's attribute using ```'{{ type.label.attribute_name }}'```. 
 
