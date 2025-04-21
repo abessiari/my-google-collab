@@ -100,7 +100,7 @@ As of now, we support the following type: <i>service</i>. The <i>label</i> can b
  
 ### <a name="pools"></a>Address Pools
 
-Note the required <i>pool</i> attribute. 
+Note the required `pool` attribute. 
  
 ```
 resource:                                               # Class
@@ -114,7 +114,7 @@ resource:                                               # Class
 
 ### <a name="services"></a>Services
 
-Note the required <i>profile</i> attribute.
+Note the required `profile` attribute.
  
 
 ```
