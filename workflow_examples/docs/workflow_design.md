@@ -5,7 +5,6 @@
  - [Configs](#configs)
    - [EditTemplate](#edit_template)
    - [Peering](#peering)
-   - [Stitching Policy](#policy)
  - [Resources](#resources)
    - [Nodes](#nodes)
    - [Networks](#networks)
@@ -39,7 +38,7 @@ variable:             # Class
  
 ```
 
-A  var-file consists of a set of key-value pairs and can be specified using the --var-file option. Each key-value pair is written as ```key: value```. The sample var-file below would override the value ```2000``` of the <i>bandwidth<i> declared above.
+A var-file consists of a set of key-value pairs and can be specified using the --var-file option. Each key-value pair is written as ```key: value```. The sample var-file below would override the value ```2000``` of the <i>bandwidth<i> declared above.
 
  ```
  bandwidth: 3000
@@ -92,38 +91,6 @@ resource:
           peering: "{{ peering.my_peering }}"
          
 ```
-### <a name="policy"></a>Stitching Policy
-
-In this example we have a stitching `policy` that is referred to by network `cloudlab_network` using the `stitch_option`. Typically one does not need to provide this `policy` config as fabfed supports system defined stitching policy. But it can be used to experiment with new facility ports
-or override the existing stitching policy. 
-
-Here we see two stitch ports. The top level `stitch_port` and the `peer` stitch port. The `peer` stitch port for fabric and the top level stitchPort is for `cloudlab`. This is specified by the `provider` attribute. Also we see that `clouldlab` is the consumer and `fabric` is the producer. This simply means that the fabric_network will be created first and when that happens, the cloudlab_network will be get created with the vlan information produced by the fabric network. 
-
-```
-config:
-  - policy:
-    - cloudlab_fabric_policy:
-        producer: fabric
-        consumer: cloudlab
-        stitch_port:
-          profile: fabfed-stitch-v2
-          provider: cloudlab
-          peer:
-            device_name: Utah-Cloudlab-Powder
-            profile: Utah-Cloudlab-Powder
-            provider: fabric
-            site: UTAH
-resource:
- - network:
-      - cloudlab_network:
-          stitch_with:
-            - network: '{{ network.fabric_network }}'
-              stitch_option:
-                 policy: "{{ policy.si_cloudlab_fabric }}"
-      - fabric_network:
-          provider: '{{ fabric.fabric_provider }}'
-```
-
 # <a name="resources"></a>Resources
 A resource consists of a <i>type</i>, a <i>label</i> and a dictionary. The parsing process guarantees that the combination of the type and the label is unique. Resources can refer to each other using the expression ```'{{ type.label }}'```. They can also refer to a resource's attribute using ```'{{ type.label.attribute_name }}'```. 
 
