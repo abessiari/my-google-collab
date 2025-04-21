@@ -137,7 +137,7 @@ A resource can refer to other resources that it depends on. In the example below
 - The sense services `serv1` and `serv2` deponds on `pool1`. 
 - The sense services `serv2` deponds on `serv1`
 - During the `-apply` phase, the resources would get created in this order [pool1, serv1, serv2]
-- During the `destroy`, the order would be reversed. 
+- During the `-destroy` phase, the order is reversed. 
 
 ```
 resource:
