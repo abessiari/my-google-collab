@@ -3,7 +3,7 @@
  - [Description](#descr)
  - [Variables](#variables)
  - [Configs](#configs)
-   - [Layer3](#layer3)
+   - [EditTemplate](#edit_template)
    - [Peering](#peering)
    - [Stitching Policy](#policy)
  - [Resources](#resources)
@@ -49,23 +49,24 @@ A  var-file consists of a set of key-value pairs and can be specified using the 
 # <a name="configs"></a>Configs
 
 A config consists of a <i>type</i>, a <i>label</i> and a dictionary specifying its attributes. The parsing process guarantees that the combination of the type and the label is unique. One can think of Configs as glorifed variables. 
-We have two types `layer3` and `peering` and the Network Resources refer to these configs.
+We have two types `edit_template` and `manifest_template` referred to by the <i>service</i> resources.
 
-### <a name="layer3"></a>Layer3
+### <a name="edit_template"></a>EditTemplate
 
-In the example below the fabric and the chi networks share or point to the same layer3 config. The controller detects that and partitions the ip address space automatically. This results in a more concise and less error-prone configuration.
+In the example below, the sense service <i>abric_l2vpn</i> refers to the <i>edit_template</i> fabric_l2vpn_edit_template.
 
 ```
 config:
-  - layer3:
-      - my_layer:
-          subnet: 192.168.100.0/24
+  - edit_template:
+      - fabric_l2vpn_edit_template:
+          data.connections[0].bandwidth.capacity: '{{ var.bandwidth }}'
 resource:
-  - network:
-      - chi_network:
-          layer3: "{{ layer3.my_layer }}"
-      - fabric_network
-          layer3: "{{ layer3.my_layer }}"
+  - service:
+      - fabric_l2vpn:
+          profile: FABRIC-L2-Net
+          edit_template: '{{ edit_template.fabric_l2vpn_edit_template }}'
+          count: '{{ var.count }}'
+
 ```
 
 ### <a name="peering"></a>Peering
