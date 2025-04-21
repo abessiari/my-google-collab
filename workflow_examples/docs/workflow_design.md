@@ -3,7 +3,7 @@
  - [Description](#descr)
  - [Variables](#variables)
  - [Configs](#configs)
-   - [EditTemplate](#edit_template)
+   - [Edit Template](#edit_template)
    - [Peering](#peering)
  - [Resources](#resources)
    - [Nodes](#nodes)
@@ -50,9 +50,9 @@ A var-file consists of a set of key-value pairs and can be specified using the -
 A config consists of a <i>type</i>, a <i>label</i> and a dictionary specifying its attributes. The parsing process guarantees that the combination of the type and the label is unique. One can think of Configs as glorifed variables. 
 We have two types `edit_template` and `manifest_template` referred to by the <i>service</i> resources.
 
-### <a name="edit_template"></a>EditTemplate
+### <a name="edit_template"></a>Edit Template
 
-In the example below, the sense service <i>abric_l2vpn</i> refers to the <i>edit_template</i> fabric_l2vpn_edit_template.
+In the example below, the sense service <i>fabric_l2vpn</i> refers to the <i>edit_template</i> fabric_l2vpn_edit_template.
 
 ```
 config:
