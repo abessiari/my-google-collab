@@ -4,7 +4,7 @@
  - [Variables](#variables)
  - [Configs](#configs)
    - [Edit Template](#edit_template)
-   - [Peering](#peering)
+   - [Manifest](#manifest_template)
  - [Resources](#resources)
    - [Nodes](#nodes)
    - [Networks](#networks)
@@ -48,7 +48,7 @@ A var-file consists of a set of key-value pairs and can be specified using the -
 # <a name="configs"></a>Configs
 
 A config consists of a <i>type</i>, a <i>label</i> and a dictionary specifying its attributes. The parsing process guarantees that the combination of the type and the label is unique. One can think of Configs as glorifed variables. 
-We have two types `edit_template` and `manifest_template` referred to by the <i>service</i> resources.
+We have two types `edit_template` and `manifest_template` referred to by <i>service</i> resources.
 
 ### <a name="edit_template"></a>Edit Template
 
@@ -68,33 +68,37 @@ resource:
 
 ```
 
-### <a name="peering"></a>Peering
+### <a name="manifest_template"></a>Manifest
 
-In the example below the `fabric` and the `aws` networks share or point to the same `peering` config. The `peering` configuration will be used by both providers to provision the necessary network stitching points to enable an isolated connection between the nodes. Here `fabric` nodes would be able to communicate to AWS nodes attached to the VPC. 
+In the example below, the sense service <i>fabric_l2vpn</i> refers to the <i>manifest_template</i> fabric_l2vpn_manifest_template.
 
 ```
 config:
-  - peering:
-      - my_peering:
-          cloud_account: "REPLACEME_WITH_AMAZON_CLOUD_ACCOUNT" 
-          cloud_vpc: "vpc-0c641c70ee2ec1790"
-          local_asn: 55038                     # customer
-          local_address: "192.168.1.1/30"
-          remote_asn: 64512                    # amazon
-          remote_address: "192.168.1.2/30"
+  - manifest_template:
+      - fabric_l2vpn_manifest_template:
+          terminals:
+            - id: "?slice_id?"
+              port: "?vlanport?"
+              vlan: "?vlantag?"
+              name: "?slice_name?"
+              bw: ?bw?
+              sparql: 'SELECT DISTINCT ?bw ?slice_name ?slice_id ?vlantag ?vlanport WHERE {
+                    ?swsvc mrs:providesSubnet ?subnet. ?subnet nml:hasBidirectionalPort ?vlanport.
+                    ?subnet nml:name ?slice_name.
+                    ?subnet mrs:hasNetworkAddress ?na_slice_id. ?na_slice_id mrs:type "slice-id".
+                    ?na_slice_id mrs:value ?slice_id. ?vlanport nml:hasLabel ?alabel. ?alabel nml:value ?vlantag.
+                    ?terminal nml:hasService ?bw_svc. ?bw_svc mrs:type ?qos_type. ?bw_svc mrs:maximumCapacity ?bw. ?bw_svc mrs:unit ?bw_unit.
+                    }'
 resource:
-  - network:
-      - aws_network:
-          peering: "{{ peering.my_peering }}"
-
-      - fabric_network:
-          peering: "{{ peering.my_peering }}"
-         
+  - service:
+      - fabric_l2vpn:
+          profile: FABRIC-L2-Net
+          manifest_template: '{{ manifest_template.fabric_l2vpn_manifest_template }}'
 ```
 # <a name="resources"></a>Resources
 A resource consists of a <i>type</i>, a <i>label</i> and a dictionary. The parsing process guarantees that the combination of the type and the label is unique. Resources can refer to each other using the expression ```'{{ type.label }}'```. They can also refer to a resource's attribute using ```'{{ type.label.attribute_name }}'```. 
 
-As of now we support the following types: <i>node</i>, <i>network</i>, and <i>service</i>. The <i>label</i> can be any string and is used as the name of the resource if the <i>name</i> attribute is not present. Resources are declared under their own class named <i>resource<i>. 
+As of now we support the following types: <i>pool</i> and <i>service</i>. The <i>label</i> can be any string and is used to name of the resource. Resources are declared under their own class named <i>resource<i>. 
  
 ### <a name="nodes"></a>Nodes
 A <i>node</i> <b>must</b> refer to a provider. Here it refers to the provider declared above. 
