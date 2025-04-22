@@ -68,6 +68,19 @@ resource:
 
 ```
 
+As mentioned above, the edit template can be specified inline. The same goes for manifest template. 
+
+```
+resource:
+  - service:
+      - fabric_l2vpn:
+          profile: FABRIC-L2-Net
+          edit_template:
+             data.connections[0].bandwidth.capacity: '{{ var.bandwidth }}'
+          count: '{{ var.count }}'
+
+```
+
 ### <a name="manifest_template"></a>Manifest
 
 In the example below, the sense service `fabric_l2vpn` refers to the `manifest_template` fabric_l2vpn_manifest_template.
