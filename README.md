@@ -3,88 +3,91 @@
  - [Description](#descr)
  - [Installation](#install)
  - [Operation Instructions](#operate)
- - [Using Fabfed Welcome Jupyter Notebook](#jupyter)
 
 # <a name="descr"></a>Description
-The FabFed is a Python library for a cross-testbed federation framework that (1) models the network experiment (or "slice") across the FABRIC testbed and federated testbeds and providers, and (2) provides workflow tools to stitch l2 and l3 networks between the testbeds and providers.
+The Sense Workflow tool allows users to deploy and compose sense services by using a yaml based workflow definition.
 
-The FabFed code took the initial form from the Mobius API, and refactored and reinvented the slice modeling, user interface, data structure and  stitching workflows. 
+- For more details, refer to [sense workflow design document](./docs/workflow_design.md)
+- Many sample workflow definitions can be found under this directory. 
+- For a quick start, see [getting_started_example.ipynb](./notebooks/getting_started_example.ipynb)
 
-The example below showcases network stitching across providers, a [chi](https://www.chameleoncloud.org/) provider and a [fabric](https://portal.fabric-testbed.net/) provider. The configuration, while incomplete, highlights how fabfed-py expresses dependencies.  
+The example below show how to connect outputs of a resource to another resource. 
 
-- For more details, refer to fabfed's [workflow design](./docs/workflow_design.md)
-- For a complete example, refer to  [Fabric Chameleon Stitching](./examples/basic-stitching/chameleon)
-- Many sample workflow definitions can be found under [the examples directory](./examples)
+- Note how service <i>serv1</i> and <i>serv2<i> use ip addresses from pool <i>pool1</i>
+- Note how service <i>serv2</i> uses the vlan tag from <i>serv1<i>'s second terminal. 
 
 ```
-  1 resource:
-  2
-  3   - network:
-  4       - chi_network:
-  5             provider: '{{ chi.chi_provider }}'
-  6             site: CHI@UC
-  7
-  8   - network:
-  9       - fabric_network:
- 10            provider: '{{ fabric.fabric_provider }}'
- 11            site: 'STAR'
- 12            stitch_with:
- 13              - network: '{{ network.chi_network }}'
+resource:
+  - service:
+      - pool1:
+          pool: AutoGOLE-IPv4-Test-Pool
+          addr_type: IPv4
+          batch: subnet
+          netmask: '/30'
+          count: 1
+      - serv1:
+          profile: Any-to-Any-L2VPN-IPv4
+          manifest_template: '{{ manifest_template.nrp_manifest_template }}'
+          edit_template:
+              data.connections[0].terminals[0].uri: urn:ogf:network:maxgigapop.net:2013:ptxn-sense-v1.maxgigapop.net
+              data.connections[0].terminals[1].uri: urn:ogf:network:es.net:2013::star-cr6:2_1_c5_1:+
+              data.connections[0].suggest_ip_range[0].start: '{{ service.pool1.hosts[0] }}'
+              data.connections[0].suggest_ip_range[0].end: '{{ service.pool1.hosts[0] }}'
+              data.connections[0].bandwidth.capacity: 1000
+          count: 1
+      - serv2:
+          profile: Any-to-Any-L2VPN-IPv4
+          manifest_template: '{{ manifest_template.nrp_manifest_template }}'
+          edit_template:
+              data.connections[0].terminals[0].uri: urn:ogf:network:icair.org:2013:mren8700:esnet
+              data.connections[0].terminals[1].uri: urn:ogf:network:starlight.org:2022:r740xd4.it.northwestern.edu 
+              data.connections[0].suggest_ip_range[0].start: '{{ service.pool1.hosts[1] }}'
+              data.connections[0].suggest_ip_range[0].end: '{{ service.pool1.hosts[1] }}'
+              data.connections[0].terminals[0].vlan_tag: '{{ service.serv1.manifest.terminals[1].tag }}'
+              data.connections[0].bandwidth.capacity: 1000
+          count: 0
+
 ```
 
 # <a name="install"></a>Installation
 
-FabFed is available at PyPI.
+sense_o_api is available on PyPI.
 ```
-pip install fabfed-py
+pip install sense_o_api
 ```
 
 
 Alternatively, you may install and test using the following commands:
 ```
 pip install -e .
-fabfed --help
-fabfed stitch-policy --help
-fabfed workflow --help
-fabfed sessions --help
-```
-
-If using the CloudLab provider, the following portal-tools module is a required dependency:
-```
-pip install git+https://gitlab.flux.utah.edu/stoller/portal-tools.git
+sense_workflow.py --help
+sense_workflow.py workflow --help
+sense_workflow.py sessions --help
 ```
 
 # <a name="operate"></a>Operation Instructions
-- Fabfed worflow configuration is specified across one or more <i>.fab<i> files. Fabfed does not care how these files  are named. Fabfed simply loads all the .fab configuration files, assembles them and parses the assembled configuration.  
-- Fabfed will pickup any file ending with the <b>.fab</b> extension in the directory specified by
-the <i>--config-dir</i>.  If this option is not present, the current directory is used. 
+- Sense worflow configuration can be specified across one or more <i>.sense<i> files. The workflow tool assembles all the .sense configuration files and then parses the assembled configuration.  
+- The <i>--config-dir</i> switch can be used to specify the configuration directory.  If  not present, the current directory is used. 
 - The --var-file option can be used to override the default value of any variable. It consists of a set of key-value pairs with each pair written as ```key: value```. At runtime, all variables found in an assembled configuration must have a value other than ```None```. The parser will halt and throw an exeption otherwise. 
 - The --session is a friendly name used to track a given workflow.  
-- Use the --help options shown above if in doubt. 
-- When stitching networks across provider use `stitch-policy` to discover available stitch information 
+- Use the --help options shown above if in doubt.
 
 ```
-# Example to view stitch policy from cloudlab to fabric
-fabfed stitch-policy -providers "fabric,cloudlab"
-
 # Validation
-fabfed workflow --config-dir some_dir [--var-file some_var_file.yml] --session some_session -validate
-fabfed workflow --config-dir some_dir [--var-file some_var_file.yml] --session some_session -stitch-info [-summary] [-json]
+sense_workflow.py --config-dir some_dir [--var-file some_var_file.yml] --session some_session -validate
 
-fabfed workflow --config-dir some_dir [--var-file some_var_file.yml] --session some_session -plan [-summary] [-json]
+# Plan
+sense_workflow.py workflow --config-dir some_dir [--var-file some_var_file.yml] --session some_session -plan [-summary] [-json]
 
-fabfed workflow --config-dir some_dir [--var-file some_var_file.yml] --session some_session -apply
+# Apply
+sense_workflow.py --config-dir some_dir [--var-file some_var_file.yml] --session some_session -apply
 
-fabfed workflow --config-dir some_dir [--var-file some_var_file.yml] --session some_session -show [-summary] [-json]
+# View State. 
+sense_workflow.py workflow --config-dir some_dir [--var-file some_var_file.yml] --session some_session -show [-summary] [-json]
 
-fabfed workflow --config-dir some_dir [--var-file some_var_file.yml] --session some_session -destroy
+# Destroy
+sense_workflow.py workflow --config-dir some_dir [--var-file some_var_file.yml] --session some_session -destroy
 
 # Use this option to manage your workflow sessions
-fabfed sessions -show
+sense_workflow.py sessions -show
 ```
-# <a name="jupyter"></a>Fabfed Welcome Jupyter Notebook
-The FabFed Welcome Jupyter Notebook helps with fabfed installation, credential configuration and with running serveral sample workflows. 
-
-- Download the [fabfed example tarball](https://artifacts.fabric-testbed.net/artifacts/288425c7-7ae8-4b6a-90d8-c8f957f630a9)
-- Or clone this repo. The notebook can be found under [the examples directory](./examples)
-
