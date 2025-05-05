@@ -1,6 +1,7 @@
 # Table of contents
 
  - [Description](#descr)
+ - [Sample Workflow Configuration[(#wconfig)
  - [Installation](#install)
  - [Operation Instructions](#operate)
  - [Quick Start](#quickstart)
@@ -14,6 +15,44 @@ The `Sense Workflow Tool` is a command-line python tool that enables you to defi
 <br>Use the tool to display its plan to either add or remove `sense services` predicated upon the comparison of your declared workflow and the current state of existing `sense services`.
 - Step 3: Apply
 <br> Finally, use the tool to accept planned changes to add or remove `sense services`. 
+
+# <a name="wconfig"></a>Sample Workflow Configuration
+
+The following snippet of the sample workflow shows how to connect outputs of a resource to another resource.
+
+- Note how service <i>serv1</i> and <i>serv2<i> use ip addresses from pool <i>pool1</i>
+- Note how service <i>serv2</i> uses the vlan tag from <i>serv1<i>'s second terminal. 
+
+```
+resource:
+  - service:
+      - pool1:
+          pool: AutoGOLE-IPv4-Test-Pool
+          addr_type: IPv4
+          batch: subnet
+          netmask: '/30'
+      - serv1:
+          profile: Any-to-Any-L2VPN-IPv4
+          manifest_template: '{{ manifest_template.nrp_manifest_template }}'
+          edit_template:
+              data.connections[0].terminals[0].uri: urn:ogf:network:maxgigapop.net:2013:ptxn-sense-v1.maxgigapop.net
+              data.connections[0].terminals[1].uri: urn:ogf:network:es.net:2013::star-cr6:2_1_c5_1:+
+              data.connections[0].suggest_ip_range[0].start: '{{ service.pool1.hosts[0] }}'
+              data.connections[0].suggest_ip_range[0].end: '{{ service.pool1.hosts[0] }}'
+              data.connections[0].bandwidth.capacity: 1000
+          count: 1
+      - serv2:
+          profile: Any-to-Any-L2VPN-IPv4
+          manifest_template: '{{ manifest_template.nrp_manifest_template }}'
+          edit_template:
+              data.connections[0].terminals[0].uri: urn:ogf:network:icair.org:2013:mren8700:esnet
+              data.connections[0].terminals[1].uri: urn:ogf:network:starlight.org:2022:r740xd4.it.northwestern.edu 
+              data.connections[0].suggest_ip_range[0].start: '{{ service.pool1.hosts[1] }}'
+              data.connections[0].suggest_ip_range[0].end: '{{ service.pool1.hosts[1] }}'
+              data.connections[0].terminals[0].vlan_tag: '{{ service.serv1.manifest.switching_subnets[1].switching_ports[1].tag }}'
+              data.connections[0].bandwidth.capacity: 1000
+          count: 1
+```
 
 # <a name="install"></a>Installation
 
@@ -60,6 +99,8 @@ sense_workflow.py sessions -show
 
 # <a name="quickstart"></a>Quick Start
 
+- [] Assumes you have installed the `Sense Worflow Tool`
+- [] Assumes you have configured your `Sense Credentials` (.sense-o-auth.yaml)
 - For more details, refer to [sense workflow design document](./docs/workflow_design.md)
 - Many sample workflow definitions can be found under this directory. 
 - For a quick start, you can use the notebook [getting_started_example.ipynb](./notebooks/getting_started_example.ipynb)
@@ -76,40 +117,4 @@ sense_workflow.py sessions -show
 >sense_workflow.py sessions -show
 >sense_workflow.py workflow -s exp-basic-any-to-any-l2vpn -destroy # destroy resources
 >sense_workflow.py sessions -show
-```
-
-The following snippet of the sample workflow shows how to connect outputs of a resource to another resource.
-
-- Note how service <i>serv1</i> and <i>serv2<i> use ip addresses from pool <i>pool1</i>
-- Note how service <i>serv2</i> uses the vlan tag from <i>serv1<i>'s second terminal. 
-
-```
-resource:
-  - service:
-      - pool1:
-          pool: AutoGOLE-IPv4-Test-Pool
-          addr_type: IPv4
-          batch: subnet
-          netmask: '/30'
-      - serv1:
-          profile: Any-to-Any-L2VPN-IPv4
-          manifest_template: '{{ manifest_template.nrp_manifest_template }}'
-          edit_template:
-              data.connections[0].terminals[0].uri: urn:ogf:network:maxgigapop.net:2013:ptxn-sense-v1.maxgigapop.net
-              data.connections[0].terminals[1].uri: urn:ogf:network:es.net:2013::star-cr6:2_1_c5_1:+
-              data.connections[0].suggest_ip_range[0].start: '{{ service.pool1.hosts[0] }}'
-              data.connections[0].suggest_ip_range[0].end: '{{ service.pool1.hosts[0] }}'
-              data.connections[0].bandwidth.capacity: 1000
-          count: 1
-      - serv2:
-          profile: Any-to-Any-L2VPN-IPv4
-          manifest_template: '{{ manifest_template.nrp_manifest_template }}'
-          edit_template:
-              data.connections[0].terminals[0].uri: urn:ogf:network:icair.org:2013:mren8700:esnet
-              data.connections[0].terminals[1].uri: urn:ogf:network:starlight.org:2022:r740xd4.it.northwestern.edu 
-              data.connections[0].suggest_ip_range[0].start: '{{ service.pool1.hosts[1] }}'
-              data.connections[0].suggest_ip_range[0].end: '{{ service.pool1.hosts[1] }}'
-              data.connections[0].terminals[0].vlan_tag: '{{ service.serv1.manifest.switching_subnets[1].switching_ports[1].tag }}'
-              data.connections[0].bandwidth.capacity: 1000
-          count: 1
 ```
