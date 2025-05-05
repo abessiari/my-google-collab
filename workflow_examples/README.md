@@ -1,7 +1,7 @@
 # Table of contents
 
  - [Description](#descr)
- - [Sample Workflow Configuration[(#wconfig)
+ - [Sample Workflow Configuration](#wconfig)
  - [Installation](#install)
  - [Operation Instructions](#operate)
  - [Quick Start](#quickstart)
