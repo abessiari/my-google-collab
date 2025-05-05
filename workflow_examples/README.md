@@ -7,12 +7,12 @@
 # <a name="descr"></a>Description
 The `Sense Workflow Tool` is a command-line python tool that enables you to define and provision sense services using configuration files. It achieves this by using a declarative language, which basically means you define the desired state of your workflow and the tool figures out the steps to achieve that state by following this simple procedure that consists of these three steps. 
 
-- Step 1:
+- Step 1: Write
 <br>Write your configuration. You can refer to [sense workflow design document](./docs/workflow_design.md) or checkout the many example configration files ending with the `.sense` extension under the example directory.
-- Step 2:
-<br>Use thw tool to display its plan to either add or remove resources predicated upon the comparison of your declared infrastructure and the current state of existing resources.
-- Step 3:
-<br> Finally, you can accept planned changes to add or remove any infrastructure resources. Your infrastructure will then be ready to be fully deployed with the help of Terraform.
+- Step 2: Plan
+<br>Use the tool to display its plan to either add or remove `sense services` predicated upon the comparison of your declared workflow and the current state of existing `sense services`.
+- Step 3: Apply
+<br> Finally, >Use the tool to  you accept planned changes to add or remove `sense services`. 
 
 
 
