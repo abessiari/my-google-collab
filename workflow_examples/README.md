@@ -18,10 +18,10 @@ The `Sense Workflow Tool` is a command-line python tool that enables you to defi
 
 # <a name="wconfig"></a>Sample Workflow Configuration
 
-The following snippet of the sample workflow shows how to connect outputs of a resource to another resource.
+The following workflow configuration snippet, though incomplete, consists of three services: a pool `sense service pool`` and two instance `sense services (serv1, serv2)` and shows how to stitch or connect outputs of a service to another service. For example service <i>serv1</i> and <i>serv2<i> use ip addresses from the pool <i>pool1</i> and service <i>serv2</i> uses the vlan tag from <i>serv1<i>'s second terminal.
 
-- Note how service <i>serv1</i> and <i>serv2<i> use ip addresses from pool <i>pool1</i>
-- Note how service <i>serv2</i> uses the vlan tag from <i>serv1<i>'s second terminal. 
+- The <i>edit_template</i>, while not shown here, is used to ovverride the editable fields in a `sense profile`.
+- The <i>manifest_template</i>, while not shown here, is used to retrieve the desired state from a deployed `sense service` 
 
 ```
 resource:
