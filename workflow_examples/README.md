@@ -100,8 +100,8 @@ sense_workflow.py sessions -show
 
 # <a name="quickstart"></a>Quick Start
 
-- [] Assumes you have installed the `Sense Worflow Tool`
-- [] Assumes you have configured your `Sense Credentials` (.sense-o-auth.yaml)
+- [*] Assumes you have installed the `Sense Worflow Tool`
+- [*] Assumes you have configured your `Sense Credentials` (.sense-o-auth.yaml)
 
 ```
 # The session name `exp-any-to-any-l2vpn` is arbitrarily picked. Feel free to change it. It is used as a prefix to
