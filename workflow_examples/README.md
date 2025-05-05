@@ -1,7 +1,7 @@
 # Table of contents
 
  - [Description](#descr)
- - [Sample Workflow Configuration](#wconfig)
+ - [Stitching Sample Workflow Configuration](#wconfig)
  - [Installation](#install)
  - [Operation Instructions](#operate)
  - [Quick Start](#quickstart)
@@ -17,7 +17,7 @@ a state file on disk to track the current state of your workflow, enabling it to
 - Step 3: Apply
 <br> Finally, use the tool to accept planned changes to add or remove `sense services`. 
 
-# <a name="wconfig"></a>Sample Workflow Configuration
+# <a name="wconfig"></a>Stitching Sample Workflow Configuration
 
 The following workflow configuration snippet, though incomplete, consists of three services: a pool `sense service pool`` and two instance `sense services (serv1, serv2)` and shows how to stitch or connect outputs of a service to another service. For example service <i>serv1</i> and <i>serv2<i> use ip addresses from the pool <i>pool1</i> and service <i>serv2</i> uses the vlan tag from <i>serv1<i>'s second terminal.
 
