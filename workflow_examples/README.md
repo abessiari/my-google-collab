@@ -12,7 +12,7 @@ The `Sense Workflow Tool` is a command-line python tool that enables you to defi
 - Step 2: Plan
 <br>Use the tool to display its plan to either add or remove `sense services` predicated upon the comparison of your declared workflow and the current state of existing `sense services`.
 - Step 3: Apply
-<br> Finally, >Use the tool to  you accept planned changes to add or remove `sense services`. 
+<br> Finally, use the tool to accept planned changes to add or remove `sense services`. 
 
 
 
