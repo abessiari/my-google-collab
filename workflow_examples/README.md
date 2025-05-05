@@ -3,6 +3,7 @@
  - [Description](#descr)
  - [Installation](#install)
  - [Operation Instructions](#operate)
+ - [Quick Start]((#quickstart)
 
 # <a name="descr"></a>Description
 The `Sense Workflow Tool` is a command-line python tool that enables you to define and provision `sense services` using configuration files. It achieves this by using a declarative language, which basically means you define the desired state of your workflow and the tool figures out the steps to achieve that state by following this simple procedure that consists of these three steps. 
@@ -14,7 +15,50 @@ The `Sense Workflow Tool` is a command-line python tool that enables you to defi
 - Step 3: Apply
 <br> Finally, use the tool to accept planned changes to add or remove `sense services`. 
 
+# <a name="install"></a>Installation
 
+sense_o_api is available on PyPI.
+```
+pip install sense_o_api
+```
+
+
+Alternatively, you may install and test using the following commands:
+```
+pip install -e .
+sense_workflow.py --help
+sense_workflow.py workflow --help
+sense_workflow.py sessions --help
+```
+
+# <a name="operate"></a>Operation Instructions
+- Sense worflow configuration can be specified across one or more <i>.sense<i> files. The workflow tool assembles all the .sense configuration files and then parses the assembled configuration.  
+- The <i>--config-dir</i> switch can be used to specify the configuration directory.  If  not present, the current directory is used. 
+- The --var-file option can be used to override the default value of any variable. It consists of a set of key-value pairs with each pair written as ```key: value```. At runtime, all variables found in an assembled configuration must have a value other than ```None```. The parser will halt and throw an exeption otherwise. 
+- The --session is a friendly name used to track a given workflow.  
+- Use the --help options shown above if in doubt.
+
+```
+# Validation
+sense_workflow.py --config-dir some_dir [--var-file some_var_file.yml] --session some_session -validate
+
+# Plan
+sense_workflow.py workflow --config-dir some_dir [--var-file some_var_file.yml] --session some_session -plan [-summary] [-json]
+
+# Apply
+sense_workflow.py --config-dir some_dir [--var-file some_var_file.yml] --session some_session -apply
+
+# View State. 
+sense_workflow.py workflow --config-dir some_dir [--var-file some_var_file.yml] --session some_session -show [-summary] [-json]
+
+# Destroy
+sense_workflow.py workflow --config-dir some_dir [--var-file some_var_file.yml] --session some_session -destroy
+
+# Use this option to manage your workflow sessions
+sense_workflow.py sessions -show
+```
+
+# <a name="quickstart"></a>Quick Start
 
 - For more details, refer to [sense workflow design document](./docs/workflow_design.md)
 - Many sample workflow definitions can be found under this directory. 
@@ -68,47 +112,4 @@ resource:
               data.connections[0].terminals[0].vlan_tag: '{{ service.serv1.manifest.switching_subnets[1].switching_ports[1].tag }}'
               data.connections[0].bandwidth.capacity: 1000
           count: 1
-```
-
-# <a name="install"></a>Installation
-
-sense_o_api is available on PyPI.
-```
-pip install sense_o_api
-```
-
-
-Alternatively, you may install and test using the following commands:
-```
-pip install -e .
-sense_workflow.py --help
-sense_workflow.py workflow --help
-sense_workflow.py sessions --help
-```
-
-# <a name="operate"></a>Operation Instructions
-- Sense worflow configuration can be specified across one or more <i>.sense<i> files. The workflow tool assembles all the .sense configuration files and then parses the assembled configuration.  
-- The <i>--config-dir</i> switch can be used to specify the configuration directory.  If  not present, the current directory is used. 
-- The --var-file option can be used to override the default value of any variable. It consists of a set of key-value pairs with each pair written as ```key: value```. At runtime, all variables found in an assembled configuration must have a value other than ```None```. The parser will halt and throw an exeption otherwise. 
-- The --session is a friendly name used to track a given workflow.  
-- Use the --help options shown above if in doubt.
-
-```
-# Validation
-sense_workflow.py --config-dir some_dir [--var-file some_var_file.yml] --session some_session -validate
-
-# Plan
-sense_workflow.py workflow --config-dir some_dir [--var-file some_var_file.yml] --session some_session -plan [-summary] [-json]
-
-# Apply
-sense_workflow.py --config-dir some_dir [--var-file some_var_file.yml] --session some_session -apply
-
-# View State. 
-sense_workflow.py workflow --config-dir some_dir [--var-file some_var_file.yml] --session some_session -show [-summary] [-json]
-
-# Destroy
-sense_workflow.py workflow --config-dir some_dir [--var-file some_var_file.yml] --session some_session -destroy
-
-# Use this option to manage your workflow sessions
-sense_workflow.py sessions -show
 ```
