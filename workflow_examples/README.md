@@ -103,10 +103,11 @@ sense_workflow.py sessions -show
 - [ ] Assumes you have installed the `Sense Worflow Tool`
 - [ ] Assumes you have configured your `Sense Credentials` (.sense-o-auth.yaml)
 
+
+The session name `exp-any-to-any-l2vpn` is arbitrarily picked. Feel free to change it. It is used as a prefix to
+name the `sense services` and to track the state of the workflow. 
+
 ```
-# The session name `exp-any-to-any-l2vpn` is arbitrarily picked. Feel free to change it. It is used as a prefix to
-name the sense services and to track the state of the workflow.
- 
 >cd workflow_examples/basic-stitching/any-to-any-l2vpn
 >sense_workflow.py sessions -show                                           # show existing sessions.
 >sense_workflow.py workflow -s exp-any-to-any-l2vpn -validate
