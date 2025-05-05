@@ -101,20 +101,15 @@ sense_workflow.py sessions -show
 
 - [] Assumes you have installed the `Sense Worflow Tool`
 - [] Assumes you have configured your `Sense Credentials` (.sense-o-auth.yaml)
-- For more details, refer to [sense workflow design document](./docs/workflow_design.md)
-- Many sample workflow definitions can be found under this directory. 
-- For a quick start, you can use the notebook [getting_started_example.ipynb](./notebooks/getting_started_example.ipynb)
-- Or use these instructions to exercise the sample workflow under `workflow_examples/basic-stitching/any-to-any-l2vpn`.
 
 ```
-# Feel free to change the session name specified by the `-s switch option`
 >cd workflow_examples/basic-stitching/any-to-any-l2vpn
->sense_workflow.py sessions -show   # show existing sessions.
+>sense_workflow.py sessions -show                                           # show existing sessions.
 >sense_workflow.py workflow -s exp-any-to-any-l2vpn -validate
 >sense_workflow.py workflow -s exp-any-to-any-l2vpn -plan -summary
->sense_workflow.py workflow -s exp-basic-any-to-any-l2vpn -apply  # create resources
->sense_workflow.py workflow -s exp-basic-any-to-any-l2vpn -show -summary # show state
+>sense_workflow.py workflow -s exp-basic-any-to-any-l2vpn -apply            # create services
+>sense_workflow.py workflow -s exp-basic-any-to-any-l2vpn -show -summary    # show state
 >sense_workflow.py sessions -show
->sense_workflow.py workflow -s exp-basic-any-to-any-l2vpn -destroy # destroy resources
+>sense_workflow.py workflow -s exp-basic-any-to-any-l2vpn -destroy          # destroy services
 >sense_workflow.py sessions -show
 ```
