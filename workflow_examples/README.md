@@ -5,7 +5,7 @@
  - [Operation Instructions](#operate)
 
 # <a name="descr"></a>Description
-The `Sense Workflow Tool` is a command-line python tool that enables you to define and provision sense services using configuration files. It achieves this by using a declarative language, which basically means you define the desired state of your workflow and the tool figures out the steps to achieve that state by following this simple procedure that consists of these three steps. 
+The `Sense Workflow Tool` is a command-line python tool that enables you to define and provision `sense services` using configuration files. It achieves this by using a declarative language, which basically means you define the desired state of your workflow and the tool figures out the steps to achieve that state by following this simple procedure that consists of these three steps. 
 
 - Step 1: Write
 <br>Write your configuration. You can refer to [sense workflow design document](./docs/workflow_design.md) or checkout the many example configration files ending with the `.sense` extension under the example directory.
