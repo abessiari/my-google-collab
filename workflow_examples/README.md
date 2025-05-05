@@ -18,14 +18,14 @@ The Sense Workflow tool allows users to deploy and compose sense services by usi
 >sense_workflow.py sessions -show   # show existing sessions.
 >sense_workflow.py workflow -s exp-any-to-any-l2vpn -validate
 >sense_workflow.py workflow -s exp-any-to-any-l2vpn -plan -summary
->sense_workflow.py workflow -s exp-basic-any-to-any-l2vpn -apply  # create resources 
+>sense_workflow.py workflow -s exp-basic-any-to-any-l2vpn -apply  # create resources
 >sense_workflow.py workflow -s exp-basic-any-to-any-l2vpn -show -summary # show state
->sense_workflow.py sessions -show  
->sense_workflow.py workflow -s exp-basic-any-to-any-l2vpn -destroy # destroy resources 
->sense_workflow.py sessions -show  
-``` 
+>sense_workflow.py sessions -show
+>sense_workflow.py workflow -s exp-basic-any-to-any-l2vpn -destroy # destroy resources
+>sense_workflow.py sessions -show
+```
 
-The following snippet of the sample workflow shows how to connect outputs of a resource to another resource. 
+The following snippet of the sample workflow shows how to connect outputs of a resource to another resource.
 
 - Note how service <i>serv1</i> and <i>serv2<i> use ip addresses from pool <i>pool1</i>
 - Note how service <i>serv2</i> uses the vlan tag from <i>serv1<i>'s second terminal. 
