@@ -32,6 +32,17 @@ TODO Example driver and creating an instance.
 
 #### <a name="add_driver"></a>Add Driver
 TODO
+
+```
+{
+  "topologyUri": "urn:ogf:network:stack-fabric:2024:topology",
+  "driverEjbPath": "java:module/FabricDriver",
+  "publicKey": "replace_me",
+  "credUrl": "https://cm.fabric-testbed.net",
+  "idToken": "replace_me",
+  "projectId": "replace_me"
+}
+```
 #### <a name="create_service_profile"></a>Create Service Profile
 TODO
 #### <a name="create_delete_service_instance"></a>Create/Delete Service Instance
