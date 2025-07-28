@@ -25,7 +25,7 @@ SENSE-O consists of two major components: the Orchestrator server and the Keyclo
 ## <a name="quickstart"></a>Quick Start
 
 - [ ] Assumes you have completed the installation.  
-- [ ] Assumes you have created a user
+- [ ] Assumes you have created an <i>admin</i> user to access sense-o portal during the installation.
 
 TODO Example driver and creating an instance. 
 
@@ -45,7 +45,34 @@ TODO
 
 #### <a name="create_service_profile"></a>Create Service Profile
 TODO
-
+```
+{
+  "data": {
+    "type": "Multi-Path P2P VLAN",
+    "connections": [
+      {
+        "bandwidth": {
+          "qos_class": "bestEffort"
+        },
+        "name": "Connection 1",
+        "terminals": [
+          {
+            "vlan_tag": "3912",
+            "assign_ip": false,
+            "uri": "urn:ogf:network:es.net:2013::newy32aoa-cr6:1_1_c26_1:mghpcc"
+          },
+          {
+            "vlan_tag": "3912",
+            "assign_ip": false,
+            "uri": "urn:ogf:network:es.net:2013::newy32aoa-cr6:1_1_c13_1:+"
+          }
+        ]
+      }
+    ]
+  },
+  "service": "dnc"
+}
+```
 #### <a name="create_delete_service_instance"></a>Create/Delete Service Instance
 TODO
 
