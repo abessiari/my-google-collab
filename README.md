@@ -26,16 +26,19 @@ SENSE-O consists of two major components: the Orchestrator server and the Keyclo
 
 - [ ] Assumes you have completed the installation.  
 - [ ] Assumes you have created an <i>admin</i> user to access sense-o portal during the installation.
+- [ ] Assumes you are logged in to the sense portal. 
 
-TODO Example driver and creating an instance. 
+the <i>Drivers</i> tab 
 
 #### <a name="add_driver"></a>Add Driver
-TODO
+Use the <i>Drivers</i> tab to create a driver. <i>Fabric</i> Driver is used here as an example.  
+You can use your own `topologyUri` and all the other fields can be found in the <i>Fabric</i> token. 
+
+Note: See section on drivers for more details.
 
 ```
 {
-  "topologyUri": "urn:ogf:network:stack-fabric:2024:topology",
-  "driverEjbPath": "java:module/FabricDriver",
+  "topologyUri": "urn:ogf:network:my-stack-fabric:2024:topology",
   "publicKey": "replace_me",
   "credUrl": "https://cm.fabric-testbed.net",
   "idToken": "replace_me",
@@ -44,29 +47,31 @@ TODO
 ```
 
 #### <a name="create_service_profile"></a>Create Service Profile
-TODO
+
+
 ```
 {
   "data": {
     "type": "Multi-Path P2P VLAN",
     "connections": [
       {
-        "bandwidth": {
-          "qos_class": "bestEffort"
-        },
         "name": "Connection 1",
         "terminals": [
           {
-            "vlan_tag": "3912",
-            "assign_ip": false,
-            "uri": "urn:ogf:network:es.net:2013::newy32aoa-cr6:1_1_c26_1:mghpcc"
+            "uri": "urn:ogf:network:stack-fabric:2024:topology:node+LOSA:port+ResearchNet-400G-LOSA",
+            "vlan_tag": "any",
+            "assign_ip": false
           },
           {
-            "vlan_tag": "3912",
-            "assign_ip": false,
-            "uri": "urn:ogf:network:es.net:2013::newy32aoa-cr6:1_1_c13_1:+"
+            "uri": "urn:ogf:network:stack-fabric:2024:topology:node+STAR:port+StarLight-400G-2-STAR",
+            "vlan_tag": "any",
+            "assign_ip": false
           }
-        ]
+        ],
+        "bandwidth": {
+          "qos_class": "guaranteedCapped",
+          "capacity": "1000"
+        }
       }
     ]
   },
