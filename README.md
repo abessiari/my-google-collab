@@ -7,7 +7,7 @@
    - [Add Driver](#add_driver)
    - [Create Service Profile](#create_service_profile)
    - [Create/Delete Service Instance](create_delete_service_instance)
- - [Next Steps]
+ - [Next Steps](#next_steps)
    - [Supported Drivers](#drivers)
    - [Example Service Profiles](#create_service_profile)
    - [API](api)
