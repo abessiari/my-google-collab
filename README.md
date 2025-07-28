@@ -9,8 +9,8 @@
    - [Create/Delete Service Instance](create_delete_service_instance)
  - [Next Steps](#next_steps)
    - [Supported Drivers](#drivers)
-   - [Example Service Profiles](#create_service_profile)
-   - [API](api)
+   - [Example Service Profiles](#example_service_profiles)
+   - [Rest API](rest_api)
 
 ## <a name="arch"></a>Architecture
 The SENSE system provides the mechanisms to enable multi-domain orchestration for a wide variety of network and other cyberinfrastructure resources in a highly customized manner.  These orchestrated services can be customized for individual domain science workflow systems and requirements.  SENSE services include Layer 2 Point to Point Network Connections, Layer 2 Multipoint Network Topologies, and Layer 3 Virtual Private Network (VPN) services.
@@ -34,4 +34,14 @@ TODO
 #### <a name="create_service_profile"></a>Create Service Profile
 TODO
 #### <a name="create_delete_service_instance"></a>Create/Delete Service Instance
+TODO
+
+## <a name="next_steps"></a>Next Steps
+TODO
+
+#### <a name="drivers"></a>Supported Drivers
+TODO
+#### <a name="example_service_profiles"></a>Example Service Profiles
+TODO
+#### <a name="rest_api"></a>Rest API
 TODO
