@@ -10,6 +10,7 @@
  - [Next Steps](#next_steps)
    - [Supported Drivers](#drivers)
    - [Example Service Profiles](#example_service_profiles)
+   - [Users And Role Mappings](#users_and_role_mappings)
    - [Rest API](rest_api)
 
 ## <a name="arch"></a>Architecture
