@@ -34,5 +34,3 @@ sense_workflow.py sessions -show
 - [ ] Assumes you have created a user
 
 TODO Example driver and creating an instance. 
-
-```
