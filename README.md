@@ -12,7 +12,7 @@ The SENSE-O deployment is container based and both Docker Stack or Kubernetes ca
 SENSE-O consists of two major components: the Orchestrator server and the Keycloak SSO server that can be separately deployed. The SENSE-O deployment is container based and a guide for a kubernets deployment can be found [here](https://github.com/StackV/sense-helm/)
 
 ## <a name="users"></a>Users
-- [ ] Users and Role Mappings are managed using The Keycloak administration console. 
+Users and Role Mappings are managed using The Keycloak administration console. 
 
 ## <a name="quickstart"></a>Quick Start
 
