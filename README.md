@@ -20,13 +20,7 @@ TODO
 TODO
 
 # <a name="operate"></a>Operation Instructions
-
-# Destroy
-sense_workflow.py workflow --config-dir some_dir [--var-file some_var_file.yml] --session some_session -destroy
-
-# Use this option to manage your workflow sessions
-sense_workflow.py sessions -show
-```
+TODO 
 
 # <a name="quickstart"></a>Quick Start
 
