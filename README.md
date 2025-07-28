@@ -47,7 +47,7 @@ Note: See section on drivers for more details.
 ```
 
 #### <a name="create_service_profile"></a>Create Service Profile
-
+Use the <i>INSTANCES</i> tab to create the profile below. 
 
 ```
 {
