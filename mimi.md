@@ -1,6 +1,8 @@
 ## Table of Contents
 - [Subheading 1](#subheading-1)
-- [Subheading 2](#subheading-2) 
+- [Subheading 2](#subheading-2)
+  - [Subheading 2.1](#subheading-21)
+  - [Subheading 2.2](#subheading-22)
 - [Subheading 3](#sub-heading-3)
 
 ## Subheading 1
@@ -28,10 +30,12 @@ gg
 - g
 - g
 - g
+### Subheading 2.1
 - g
 - g
 - g
 - h
+### Subheading 2.2
 - h
 - h
 - h
