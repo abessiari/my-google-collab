@@ -1,4 +1,4 @@
-# Table of contents
+## Table of contents
 
  - [Architecture](#arch)
  - [Installation](#install)
@@ -24,7 +24,7 @@ Users and Role Mappings are managed using The Keycloak administration console.
 
 TODO Example driver and creating an instance. 
 
-## <a name="create_service_profile"></a>Create Service Profile
+### <a name="create_service_profile"></a>Create Service Profile
 TODO
-## <a name="create_delete_service_instance"></a>Create/Delete Service Instance
+### <a name="create_delete_service_instance"></a>Create/Delete Service Instance
 TODO
